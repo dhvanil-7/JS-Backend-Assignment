@@ -1,5 +1,7 @@
 import {v2 as cloudinary} from "cloudinary"
 import fs from "fs"
+import url from "url";
+import path from "path";
 
 
 cloudinary.config({ 
@@ -27,5 +29,26 @@ const uploadOnCloudinary = async (localFilePath) => {
 }
 
 
+const removeFromCloudinary = async (fileURL) => {
+    try {   
+            const parsed_url = url.parse(fileURL)
+            let public_id = path.basename(parsed_url.pathname).split(".")[0]
 
-export {uploadOnCloudinary}
+            if (!public_id) {
+                throw new ApiError(500, "Public id not found on cloudinary.")
+            }
+            
+            // Destroy file on cloudinary
+            const response = await cloudinary.uploader.destroy(public_id)
+            return response;
+    } catch (error) {
+        console.error("Error raised while getting public_id from fileURL.", error)
+        throw error
+    }
+}
+
+
+
+export {uploadOnCloudinary, 
+    removeFromCloudinary
+}
