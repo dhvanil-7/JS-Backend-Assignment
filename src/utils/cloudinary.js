@@ -29,7 +29,7 @@ const uploadOnCloudinary = async (localFilePath) => {
 }
 
 
-const removeFromCloudinary = async (fileURL) => {
+const removeFromCloudinary = async (fileURL, fileType="image") => {
     try {   
             const parsed_url = url.parse(fileURL)
             let public_id = path.basename(parsed_url.pathname).split(".")[0]
@@ -39,7 +39,7 @@ const removeFromCloudinary = async (fileURL) => {
             }
             
             // Destroy file on cloudinary
-            const response = await cloudinary.uploader.destroy(public_id)
+            const response = await cloudinary.uploader.destroy(public_id, { resource_type: fileType })
             return response;
     } catch (error) {
         console.error("Error raised while getting public_id from fileURL.", error)
