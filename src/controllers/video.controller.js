@@ -27,17 +27,13 @@ const getAllVideos = asyncHandler(async (req, res) => {
                     $regex:new RegExp(query, 'i')
                 }
             }
-        },
-        {
-            $project: {
-                _id: 0
-            }
         }
     ],
     {
         page: page,
         limit: limit
     })
+    console.log(aggregatedVideos)
 
     return res.status(200).json(new ApiResponse(200, aggregatedVideos,
         aggregatedVideos.docs.length ? "Videos fetched successfully." : "No videos found."))

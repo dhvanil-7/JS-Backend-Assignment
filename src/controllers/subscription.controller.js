@@ -22,7 +22,6 @@ const toggleSubscription = asyncHandler(async (req, res) => {
     let toggleSubscription;
     if(isChannelSubscribed){
         toggleSubscription = await Subscription.findByIdAndDelete(isChannelSubscribed._id, {new: true})
-        console.log(toggleSubscription)
     }
     else {
        toggleSubscription = await Subscription.create({
@@ -40,7 +39,6 @@ const toggleSubscription = asyncHandler(async (req, res) => {
 // controller to return subscriber list of a channel
 const getUserChannelSubscribers = asyncHandler(async (req, res) => {
     const {channelId} = req.params
-    console.log(channelId)
     const all_subscribers = await Subscription.find({
         channel: channelId
     })
